@@ -1,8 +1,8 @@
 <script setup>
 import logoImage from '@/assets/photos/logo.png'
-import searchIcon from './icons/navbarIcons/SearchIcon.svg'
-import rideIcon from './icons/navbarIcons/RideIcon.svg'
-import apartmentsIcon from './icons/navbarIcons/ApartmentsIcon.svg'
+import searchIcon from './icons/headerIcons/SearchIcon.svg'
+import rideIcon from './icons/headerIcons/RideIcon.svg'
+import apartmentsIcon from './icons/headerIcons/ApartmentsIcon.svg'
 
 const date = new Date()
 const currentDate = date.toLocaleDateString('en-US', { 
@@ -61,6 +61,7 @@ header {
   top: 0;
   z-index: 100;
   background: #fff;
+  margin-bottom: 40px;
 }
 
 .header-top,
