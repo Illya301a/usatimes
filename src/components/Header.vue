@@ -57,11 +57,14 @@ const currentDate = date.toLocaleDateString('en-US', {
 
 <style scoped>
 header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 100;
   background: #fff;
-  margin-bottom: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header-top,
