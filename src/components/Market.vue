@@ -99,7 +99,7 @@ const formatNumber = (num) => {
 
 .market-title,
 .market-subtitle {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   line-height: 1.2;
   margin: 0;
 }
@@ -140,10 +140,13 @@ const formatNumber = (num) => {
 }
 
 .market-name,
-.market-symbol,
+.market-symbol {
+  font-family: var(--font-sans);
+}
+
 .market-price,
 .market-change {
-  font-family: var(--font-secondary);
+  font-family: var(--font-mono);
 }
 
 .market-name {

@@ -10,7 +10,11 @@ onMounted(async () => {
   try {
     const response = await fetch('https://uat.usatimes.com/api/articles')
     const data = await response.json()
-    articles.value = data.data?.map(article => article.title) || []
+    articles.value =
+      data.data?.map(article => ({
+        title: article.title,
+        link: article.link || '#'
+      })) || []
   } catch (error) {
     console.error('Failed to fetch articles:', error)
   }
@@ -25,8 +29,8 @@ onMounted(async () => {
     </div>
     <div v-if="articles.length" class="trending-ticker">
       <div class="trending-content">
-        <template v-for="(title, index) in duplicatedArticles" :key="index">
-          <a href="#" class="trending-item">{{ title }}</a>
+        <template v-for="(article, index) in duplicatedArticles" :key="index">
+          <a :href="article.link" class="trending-item">{{ article.title }}</a>
           <span class="trending-separator">•</span>
         </template>
       </div>
@@ -60,7 +64,7 @@ onMounted(async () => {
 }
 
 .trending-title {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
   color: var(--color-quaternary);
@@ -92,7 +96,7 @@ onMounted(async () => {
 }
 
 .trending-item {
-  font-family: var(--font-primary);
+  font-family: var(--font-serif);
   font-weight: 400;
   font-size: 14px;
   color: #1E2939;
@@ -101,7 +105,8 @@ onMounted(async () => {
 }
 
 .trending-item:hover {
-  text-decoration: underline;
+  color: var(--color-quaternary);
+  transition: color 0.2s ease;
 }
 
 .trending-separator {

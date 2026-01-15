@@ -3,10 +3,12 @@
   --color-secondary: #6A7282;
   --color-tertiary: #4A5565;
   --color-quaternary: #0033A0;
-
-  --font-primary: 'Tinos', serif;
-  --font-secondary: 'Inter', sans-serif;
-  --font-tertiary: 'Roboto', sans-serif;
+  
+  
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-roboto: 'Roboto', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;;
 }
 
 *,

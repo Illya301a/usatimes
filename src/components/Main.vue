@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, computed, onUnmounted } from 'vue'
-import newyork from '@/assets/photos/newyork.jpg'
 
 const articles = ref([])
 const currentIndex = ref(0)
@@ -39,12 +38,17 @@ const formatCategory = (type) => {
 
 <template>
   <div class="content">
-    <div class="content-image">
-      <img :src="newyork" alt="New York" />
-      <div class="content-image-overlay">
-        Photo: Alexander Smith
+    <Transition name="fade" mode="out-in">
+      <div
+        v-if="currentArticle?.image_url"
+        :key="currentArticle.id"
+        class="content-image">
+        <img :src="currentArticle.image_url" :alt="currentArticle.title" />
+        <div class="content-image-overlay">
+          Photo: {{ currentArticle.author || 'USA Times' }}
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <div class="content-article" v-if="currentArticle">
       <Transition name="fade" mode="out-in">
@@ -147,22 +151,22 @@ const formatCategory = (type) => {
 
 <style scoped>
 .content {
-  float: left;
   max-width: 60%;
   padding: 32px 48px;
   border-right: 1px solid #F3F4F6;
-  border-bottom: 1px solid #F3F4F6;
 }
 
 .content-image {
   position: relative;
   display: inline-block;
+  width: 100%;
+  max-width: 970px;
 }
 
 .content-image img {
-  width: 100%;
-  max-width: 970px;
-  aspect-ratio: 970/545;
+  width: 970px;
+  height: 545px;
+  max-width: 100%;
   object-fit: cover;
   border-radius: 10px;
   display: block;
@@ -176,7 +180,7 @@ const formatCategory = (type) => {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   color: #fff;
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-size: 12px;
   line-height: 1.4;
 }
@@ -208,7 +212,7 @@ const formatCategory = (type) => {
   border: 1px solid var(--color-quaternary);
   border-radius: 20px;
   color: var(--color-quaternary);
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 12px;
   background: #fff;
@@ -216,7 +220,7 @@ const formatCategory = (type) => {
 
 .article-read-time {
   color: var(--color-secondary);
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 12px;
   text-transform: uppercase;
@@ -233,8 +237,8 @@ const formatCategory = (type) => {
 }
 
 .article-title {
-  font-family: Dominica, serif;
-  font-weight: 500;
+  font-family: var(--font-serif);
+  font-weight: 900;
   font-size: 60px;
   line-height: 60px;
   color: var(--color-primary);
@@ -243,7 +247,7 @@ const formatCategory = (type) => {
 }
 
 .article-description {
-  font-family: var(--font-primary);
+  font-family: var(--font-serif);
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;
@@ -256,7 +260,7 @@ const formatCategory = (type) => {
   align-items: center;
   margin-bottom: 32px;
   color: var(--color-quaternary);
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
@@ -304,7 +308,7 @@ const formatCategory = (type) => {
 }
 
 .opinion-text {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 900;
   font-size: 12px;
   letter-spacing: 1.2px;
@@ -315,7 +319,7 @@ const formatCategory = (type) => {
 }
 
 .opinion-view, .opinion-view span {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
   color: #99A1AF;
@@ -343,7 +347,7 @@ const formatCategory = (type) => {
 }
 
 .item-title {
-  font-family: var(--font-primary);
+  font-family: var(--font-serif);
   font-weight: 700;
   font-size: 18px;
   line-height: 24px;
@@ -352,7 +356,7 @@ const formatCategory = (type) => {
 }
 
 .item-subtitle {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 12px;
   color: #99A1AF;
@@ -402,7 +406,7 @@ const formatCategory = (type) => {
 
 .related-category {
   color: var(--color-quaternary);
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
@@ -410,7 +414,7 @@ const formatCategory = (type) => {
 }
 
 .related-title {
-  font-family: var(--font-primary);
+  font-family: var(--font-serif);
   font-weight: 700;
   font-size: 28px;
   line-height: 1.3;
@@ -435,7 +439,7 @@ const formatCategory = (type) => {
 }
 
 .related-description {
-  font-family: var(--font-primary);
+  font-family: var(--font-serif);
   font-weight: 400;
   font-size: 16px;
   line-height: 1.6;
@@ -461,6 +465,39 @@ const formatCategory = (type) => {
   background: var(--color-quaternary);
   width: 10px;
   height: 10px;
+}
+
+@media (max-width: 1024px) {
+  .content {
+    max-width: 100%;
+    padding: 24px 24px;
+    border-right: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 20px 16px;
+  }
+
+  .content-info {
+    height: auto;
+    padding-right: 0;
+    margin-bottom: 32px;
+  }
+
+  .article-title {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .related-pair {
+    flex-direction: column;
+  }
+
+  .related-item {
+    width: 100%;
+  }
 }
 
 </style>

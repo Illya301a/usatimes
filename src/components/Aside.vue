@@ -91,7 +91,6 @@
 
 <style scoped>
 aside {
-  float: left;
   width: 40%;
   padding: 32px;
 }
@@ -110,7 +109,7 @@ aside {
 }
 
 .booking-title {
-  font-family: var(--font-tertiary);
+  font-family: var(--font-roboto);
   font-size: 48px;
   font-weight: 900;
   line-height: 40px;
@@ -120,7 +119,7 @@ aside {
 }
 
 .booking-subtitle {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 400;
   color: var(--color-secondary);
@@ -146,7 +145,7 @@ aside {
   border: none;
   background-color: transparent;
   border-radius: 6px;
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 700;
   color: var(--color-secondary);
@@ -170,7 +169,7 @@ aside {
 }
 
 .toggle-label {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-size: 14px;
   color: #101828;
 }
@@ -239,7 +238,7 @@ aside {
   border: none;
   background-color: #F3F4F6;
   border-radius: 8px;
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-size: 14px;
   color: #101828;
   outline: none;
@@ -278,7 +277,7 @@ aside {
   color: white;
   border: none;
   border-radius: 8px;
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -301,7 +300,7 @@ aside {
 }
 
 .login-link {
-  font-family: var(--font-secondary);
+  font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
   color: #6A7282;
@@ -313,5 +312,28 @@ aside {
 
 .login-link:hover {
   color: #101828;
+}
+
+@media (max-width: 1024px) {
+  aside {
+    width: 100%;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  aside {
+    padding: 20px 16px;
+  }
+
+  .booking-title {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .booking-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>
