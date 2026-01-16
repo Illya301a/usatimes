@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted, computed, onUnmounted } from 'vue'
+import { fetchArticles } from '../composables/useApi'
+
+const emit = defineEmits(['loaded'])
 
 const articles = ref([])
 const currentIndex = ref(0)
@@ -9,14 +12,18 @@ let relatedIntervalId = null
 
 const currentArticle = computed(() => articles.value[currentIndex.value])
 
-const firstArticle = computed(() => articles.value[relatedIndex.value * 2])
-const secondArticle = computed(() => articles.value[relatedIndex.value * 2 + 3])
+const firstArticle = computed(() => articles.value[relatedIndex.value * 2 + 1])
+const secondArticle = computed(() => articles.value[relatedIndex.value * 2 + 2])
 
 onMounted(async () => {
-  const response = await fetch('https://uat.usatimes.com/api/articles')
-  const data = await response.json()
-  articles.value = data.data || []
-  
+  try {
+    articles.value = await fetchArticles()
+  } catch (error) {
+    console.error('Failed to fetch articles:', error)
+  } finally {
+    emit('loaded')
+  }
+
   intervalId = setInterval(() => {
     currentIndex.value = (currentIndex.value + 1) % 5
   }, 5000)
@@ -31,9 +38,6 @@ onUnmounted(() => {
   clearInterval(relatedIntervalId)
 })
 
-const formatCategory = (type) => {
-  return type ? type.toUpperCase() : ''
-}
 </script>
 
 <template>
@@ -54,7 +58,7 @@ const formatCategory = (type) => {
       <Transition name="fade" mode="out-in">
         <div :key="currentArticle.id">
           <div class="article-meta">
-            <span class="article-category">{{ formatCategory(currentArticle.type) }}</span>
+            <span class="article-category">{{ currentArticle.type || '' }}</span>
             <span class="article-read-time">4 min read</span>
           </div>
 
@@ -64,16 +68,19 @@ const formatCategory = (type) => {
             <div>
               <a :href="currentArticle.link" class="article-link">
                 read full story
-                <span>&#10141;</span>
+                <span>➔</span>
               </a>
 
               <div class="article-dots">
-                <span
+                <button
                   v-for="(article, index) in articles.slice(0, 5)"
                   :key="index"
+                  type="button"
                   class="dot"
-                  :class="{ active: index === currentIndex }">
-                </span>
+                  :class="{ active: index === currentIndex }"
+                  :aria-label="`Open article ${index + 1}`"
+                  @click="currentIndex = index">
+                </button>
               </div>
             </div>
           </div>
@@ -83,7 +90,7 @@ const formatCategory = (type) => {
       <div class="content-opinion">
         <div class="opinion-header">
           <h2 class="opinion-text">opinion & analysis</h2>
-          <a href="#" class="opinion-view">view all<span>&#10141;</span></a>
+          <a href="#" class="opinion-view">view all<span>➔</span></a>
         </div>
 
         <div class="content-analysis">
@@ -113,36 +120,39 @@ const formatCategory = (type) => {
         <div class="related-row" v-if="firstArticle && secondArticle">
           <Transition name="fade" mode="out-in">
             <div :key="relatedIndex" class="related-pair">
-              <div class="related-item">
+              <a class="related-item" :href="firstArticle.link || '#'">
                 <div class="related-image" v-if="firstArticle.image_url">
                   <img :src="firstArticle.image_url" :alt="firstArticle.title" />
                 </div>
                 <div class="related-content">
-                  <span class="related-category">{{ formatCategory(firstArticle.type) }}</span>
+                  <span class="related-category">{{ firstArticle.type || '' }}</span>
                   <h3 class="related-title clamp-2">{{ firstArticle.title }}</h3>
                   <p class="related-description clamp-2">{{ firstArticle.description }}</p>
                 </div>
-              </div>
-              <div class="related-item">
+              </a>
+              <a class="related-item" :href="secondArticle.link || '#'">
                 <div class="related-image" v-if="secondArticle.image_url">
                   <img :src="secondArticle.image_url" :alt="secondArticle.title" />
                 </div>
                 <div class="related-content">
-                  <span class="related-category">{{ formatCategory(secondArticle.type) }}</span>
+                  <span class="related-category">{{ secondArticle.type || '' }}</span>
                   <h3 class="related-title clamp-2">{{ secondArticle.title }}</h3>
                   <p class="related-description clamp-2">{{ secondArticle.description }}</p>
                 </div>
-              </div>
+              </a>
             </div>
           </Transition>
         </div>
         <div class="related-dots">
-          <span
+          <button
             v-for="index in 4"
             :key="index"
+            type="button"
             class="related-dot"
-            :class="{ active: index - 1 === relatedIndex }">
-          </span>
+            :class="{ active: index - 1 === relatedIndex }"
+            :aria-label="`Open related set ${index}`"
+            @click="relatedIndex = index - 1">
+          </button>
         </div>
       </div>
     </div>
@@ -153,7 +163,7 @@ const formatCategory = (type) => {
 .content {
   max-width: 60%;
   padding: 32px 48px;
-  border-right: 1px solid #F3F4F6;
+  border-right: 1px solid var(--color-gray-100);
 }
 
 .content-image {
@@ -179,7 +189,7 @@ const formatCategory = (type) => {
   padding: 6px 12px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 4px;
-  color: #fff;
+  color: var(--color-white);
   font-family: var(--font-sans);
   font-size: 12px;
   line-height: 1.4;
@@ -215,7 +225,8 @@ const formatCategory = (type) => {
   font-family: var(--font-sans);
   font-weight: 400;
   font-size: 12px;
-  background: #fff;
+  text-transform: uppercase;
+  background: var(--color-white);
 }
 
 .article-read-time {
@@ -267,9 +278,14 @@ const formatCategory = (type) => {
   text-transform: uppercase;
 }
 
+.article-link:hover span {
+  margin-left: 10px;
+}
+
 .article-link span {
   font-size: 16px;
   margin-left: 5px;
+  transition: margin-left 0.3s ease;
 }
 
 .article-dots {
@@ -282,19 +298,15 @@ const formatCategory = (type) => {
   height: 8px;
   border-radius: 50%;
   border: none;
-  background: #D1D5DC;
+  background: var(--color-gray-300);
+  padding: 0;
+  cursor: pointer;
 }
 
 .dot.active {
   background: var(--color-quaternary);
   width: 10px;
   height: 10px;
-}
-
-.dot.dashed {
-  width: 20px;
-  height: 20px;
-  border-style: dashed;
 }
 
 .content-opinion {
@@ -313,18 +325,22 @@ const formatCategory = (type) => {
   font-size: 12px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: #000000;
+  color: var(--color-black);
   padding-bottom: 24px;
-  text-transform: uppercase;
 }
 
 .opinion-view, .opinion-view span {
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
-  color: #99A1AF;
+  color: var(--color-gray-400);
   text-decoration: none;
   text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.opinion-view:hover, .opinion-view:hover span {
+  color: var(--color-quaternary);
 }
 
 .opinion-view span {
@@ -347,6 +363,10 @@ const formatCategory = (type) => {
   margin-right: 0;
 }
 
+.analysis-item:hover .item-title {
+  color: var(--color-quaternary);
+}
+
 .item-title {
   font-family: var(--font-serif);
   font-weight: 700;
@@ -354,13 +374,14 @@ const formatCategory = (type) => {
   line-height: 24px;
   color: var(--color-primary);
   padding-bottom: 16px;
+  transition: color 0.3s ease;
 }
 
 .item-subtitle {
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 12px;
-  color: #99A1AF;
+  color: var(--color-gray-400);
   line-height: 1.6;
   letter-spacing: 1.12px;
   text-transform: uppercase;
@@ -381,7 +402,14 @@ const formatCategory = (type) => {
 }
 
 .related-item {
+  display: block;
   width: 50%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.related-item:hover .related-title{
+  color: var(--color-quaternary);
 }
 
 .related-image {
@@ -421,6 +449,7 @@ const formatCategory = (type) => {
   line-height: 1.3;
   color: var(--color-primary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .clamp-2{
@@ -458,8 +487,10 @@ const formatCategory = (type) => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #D1D5DC;
+  background: var(--color-gray-300);
   border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .related-dot.active {
@@ -484,6 +515,14 @@ const formatCategory = (type) => {
   .content-info {
     height: auto;
     padding-right: 0;
+    margin-bottom: 32px;
+  }
+
+  .article-link {
+    margin-top: 32px;
+  }
+
+  .opinion-view {
     margin-bottom: 32px;
   }
 

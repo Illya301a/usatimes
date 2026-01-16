@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
 import logoImage from '@/assets/photos/logo.png'
 import arrowIcon from './icons/footerIcons/arrow.svg'
@@ -117,13 +117,16 @@ const handleSubscribe = () => {
 
 <style scoped>
 footer {
-  background: #fff;
+  background: var(--color-white);
   padding: 64px 32px 32px;
-  border-top: 1px solid #E5E7EB;
+  border-top: 1px solid var(--color-gray-300);
 }
 
 footer a:hover {
-  color: #000;
+  color: var(--color-black);
+}
+
+footer a {
   transition: color 0.5s ease;
 }
 
@@ -175,19 +178,18 @@ footer a:hover {
 
 .newsletter-form {
   display: flex;
-  gap: 0;
 }
 
 .newsletter-input {
   flex: 1;
   padding: 4px 12px;
   margin-right: 8px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid var(--color-gray-300);
   background: #F9FAFB;
   border-radius: 6px;
   font-family: var(--font-sans);
   font-size: 14px;
-  color: #71717A;
+  color: var(--color-gray-500);
   outline: none;
 }
 
@@ -199,7 +201,7 @@ footer a:hover {
   width: 36px;
   height: 36px;
   border: none;
-  background: #000;
+  background: var(--color-black);
   border-radius: 6px;
   cursor: pointer;
   display: flex;
@@ -221,27 +223,27 @@ footer a:hover {
 .social-icon {
   width: 40px;
   height: 40px;
-  border: 1px solid #D1D5DB;
+  border: 1px solid var(--color-gray-300);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: var(--color-white);
+  transition: background 0.2s ease;
 }
 
 .social-icon:hover {
-  background: #000;
-  transition: background 0.2s ease;
+  background: var(--color-black);
 }
 
 .social-icon img {
   width: 20px;
   height: 20px;
+  transition: filter 0.2s ease;
 }
 
 .social-icon:hover img {
   filter: invert(1);
-  transition: filter 0.2s ease;
 }
 
 .footer-right {
@@ -287,7 +289,7 @@ footer a:hover {
 
 .footer-separator {
   height: 1px;
-  background: #E0E0E0;
+  background: var(--color-border-strong);
   margin-bottom: 24px;
 }
 
@@ -298,7 +300,7 @@ footer a:hover {
   gap: 24px;
   font-family: var(--font-sans);
   font-size: 12px;
-  color: #99A1AF;
+  color: var(--color-gray-400);
 }
 
 .bottom-links {
@@ -307,7 +309,7 @@ footer a:hover {
 }
 
 .bottom-links a {
-  color: #99A1AF;
+  color: var(--color-gray-400);
   text-decoration: none;
 }
 

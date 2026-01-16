@@ -1,19 +1,32 @@
-<script setup lang="ts">
-  import { ref } from 'vue'
+<script setup>
+  import { ref, watch } from 'vue'
   import cursorIcon from './icons/cursorIcon.svg'
   
-  const bookingMode = ref<'now' | 'schedule'>('now')
+  const bookingMode = ref('now')
   const meteredRide = ref(false)
   const currentLocation = ref('')
   const destination = ref('')
-  
+  const scheduleDate = ref('')
+  const scheduleTime = ref('')
+
   const useCurrentLocation = () => {
     console.log('Use current location')
   }
-  
+
   const requestLimousine = () => {
-    console.log('Request limousine', { bookingMode: bookingMode.value, meteredRide: meteredRide.value, currentLocation: currentLocation.value, destination: destination.value })
+    console.log('Request limousine', {
+      bookingMode: bookingMode.value,
+      meteredRide: meteredRide.value,
+      currentLocation: currentLocation.value,
+      destination: destination.value
+    })
   }
+
+  watch(meteredRide, (value) => {
+    if (value) {
+      destination.value = ''
+    }
+  })
   </script>
 
 <template>
@@ -56,6 +69,22 @@
       </div>
 
       <div class="input-group">
+        <div v-if="bookingMode === 'schedule'" class="schedule-row">
+          <div class="input-wrapper">
+            <input
+              type="date"
+              class="input-field"
+              v-model="scheduleDate"
+            />
+          </div>
+          <div class="input-wrapper">
+            <input
+              type="time"
+              class="input-field"
+              v-model="scheduleTime"
+            />
+          </div>
+        </div>
         <div class="input-wrapper">
           <input 
             type="text" 
@@ -70,16 +99,17 @@
         <div class="input-wrapper">
           <input 
             type="text" 
-            placeholder="Where to?" 
+            :placeholder="meteredRide ? 'Destination: As directed by passenger' : 'Where to?'" 
             class="input-field"
             v-model="destination"
+            :disabled="meteredRide"
           />
         </div>
       </div>
 
       <button class="request-btn" @click="requestLimousine">
         <span>Request Limousine</span>
-        ➝
+        <span>➔</span>
       </button>
 
       <div class="footer-link">
@@ -94,7 +124,7 @@ aside {
   width: 40%;
   padding: 32px;
   margin: 0 auto;
-  border-bottom: 1px solid #E5E7EB;
+  border-bottom: 1px solid var(--color-gray-300);
 }
 
 .booking-container {
@@ -115,7 +145,7 @@ aside {
   font-size: 48px;
   font-weight: 900;
   line-height: 40px;
-  color: #101828;
+  color: var(--color-primary);
   letter-spacing: -1px;
   margin-bottom: 10px;
 }
@@ -137,7 +167,7 @@ aside {
 .booking-selector {
   display: flex;
   gap: 8px;
-  background-color: #F3F4F6;
+  background-color: var(--color-gray-100);
   padding: 4px;
   border-radius: 8px;
 }
@@ -156,12 +186,12 @@ aside {
 }
 
 .mode-btn.active {
-  background-color: #ffffff;
-  color: #000;
+  background-color: var(--color-white);
+  color: var(--color-black);
 }
 
 .mode-btn:hover:not(.active) {
-  background-color: #E5E7EB;
+  background-color: var(--color-gray-300);
 }
 
 .toggle-container {
@@ -173,7 +203,7 @@ aside {
 .toggle-label {
   font-family: var(--font-sans);
   font-size: 14px;
-  color: #101828;
+  color: var(--color-primary);
 }
 
 .toggle-switch {
@@ -196,7 +226,7 @@ aside {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #D1D5DB;
+  background-color: var(--color-gray-300);
   transition: 0.3s;
   border-radius: 24px;
 }
@@ -214,7 +244,7 @@ aside {
 }
 
 .toggle-switch input:checked + .toggle-slider {
-  background-color: #000000;
+  background-color: var(--color-black);
 }
 
 .toggle-switch input:checked + .toggle-slider:before {
@@ -225,6 +255,15 @@ aside {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.schedule-row {
+  display: flex;
+  gap: 12px;
+}
+
+.schedule-row .input-wrapper {
+  flex: 1;
 }
 
 .input-wrapper {
@@ -238,21 +277,21 @@ aside {
   width: 100%;
   padding: 20px 16px;
   border: none;
-  background-color: #F3F4F6;
+  background-color: var(--color-gray-100);
   border-radius: 8px;
   font-family: var(--font-sans);
   font-size: 14px;
-  color: #101828;
+  color: var(--color-primary);
   outline: none;
   transition: background-color 0.2s ease;
 }
 
 .input-field::placeholder {
-  color: #6A7282;
+  color: var(--color-secondary);
 }
 
 .input-field:focus {
-  background-color: #E5E7EB;
+  background-color: var(--color-gray-300);
 }
 
 .location-icon {
@@ -274,9 +313,9 @@ aside {
 
 .request-btn {
   width: 100%;
-  padding: 14px 20px;
-  background-color: #000000;
-  color: white;
+  padding: 20px 16px;
+  background-color: var(--color-black);
+  color: var(--color-white);
   border: none;
   border-radius: 8px;
   font-family: var(--font-sans);
@@ -305,7 +344,7 @@ aside {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 700;
-  color: #6A7282;
+  color: var(--color-secondary);
   text-decoration: none;
   letter-spacing: 0.5px;
   transition: color 0.2s ease;
@@ -314,7 +353,7 @@ aside {
 }
 
 .login-link:hover {
-  color: #101828;
+  color: var(--color-primary);
 }
 
 @media (max-width: 1024px) {
@@ -336,6 +375,10 @@ aside {
 
   .booking-controls {
     gap: 8px;
+  }
+
+  .schedule-row {
+    flex-direction: column;
   }
 }
 </style>

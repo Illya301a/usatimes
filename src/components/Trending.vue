@@ -1,22 +1,26 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import trendingIcon from './icons/mainIcons/Trending.svg'
+import { fetchArticles } from '../composables/useApi'
 
 const articles = ref([])
 
 const duplicatedArticles = computed(() => [...articles.value, ...articles.value])
 
+const emit = defineEmits(['loaded'])
+
 onMounted(async () => {
   try {
-    const response = await fetch('https://uat.usatimes.com/api/articles')
-    const data = await response.json()
+    const data = await fetchArticles()
     articles.value =
-      data.data?.map(article => ({
+      data?.map(article => ({
         title: article.title,
         link: article.link || '#'
       })) || []
   } catch (error) {
     console.error('Failed to fetch articles:', error)
+  } finally {
+    emit('loaded')
   }
 })
 </script>
@@ -46,8 +50,8 @@ onMounted(async () => {
   padding: 16px 32px;
   max-width: 1920px;
   margin: 0 auto;
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border-strong);
   overflow: hidden;
 }
 
@@ -75,7 +79,7 @@ onMounted(async () => {
   flex: 1;
   overflow: hidden;
   position: relative;
-  mask-image: linear-gradient(to right, transparent 0%, black 60px, black calc(100% - 60px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 40px, black calc(100% - 40px), transparent 100%);
 }
 
 .trending-content {
@@ -83,7 +87,7 @@ onMounted(async () => {
   align-items: center;
   gap: 8px;
   white-space: nowrap;
-  animation: scroll 60s linear infinite;
+  animation: scroll 90s linear infinite;
 }
 
 @keyframes scroll {
@@ -102,15 +106,15 @@ onMounted(async () => {
   color: #1E2939;
   text-decoration: none;
   text-transform: capitalize;
+  transition: color 0.2s ease;
 }
 
 .trending-item:hover {
   color: var(--color-quaternary);
-  transition: color 0.2s ease;
 }
 
 .trending-separator {
-  color: #D1D5DC;
+  color: var(--color-gray-300);
   font-size: 13px;
   margin: 0 32px 0 56px;
 }

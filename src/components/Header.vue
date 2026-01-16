@@ -91,7 +91,7 @@ header {
   right: 0;
   width: 100%;
   z-index: 100;
-  background: #fff;
+  background: var(--color-white);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -179,11 +179,11 @@ header {
   display: flex;
   align-items: center;
   border-radius: 6px;
+  transition: background-color 0.2s ease;
 }
 
 .search-button:hover {
-  background-color: #f3f4f6;
-  transition: background-color 0.2s ease;
+  background-color: var(--color-gray-100);
 }
 
 .login-link,
@@ -200,12 +200,12 @@ header {
 }
 
 .login-link:hover {
-  background-color: #f3f4f6;
+  background-color: var(--color-gray-100);
 }
 
 .subscribe-btn {
   background: var(--color-quaternary);
-  color: #fff;
+  color: var(--color-white);
   border: none;
   padding: 8px 20px;
   border-radius: 25px;
@@ -226,7 +226,7 @@ header {
   justify-content: center;
   gap: 32px;
   padding: 12px 20px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--color-border-strong);
   text-transform: uppercase;
 }
 
@@ -242,22 +242,22 @@ header {
 }
 
 .header-nav a:hover {
-  color: #000;
+  color: var(--color-black);
 }
 
 .nav-separator {
   width: 1px;
   height: 16px;
-  background: #e0e0e0;
+  background: var(--color-border-strong);
 }
 
 .nav-separator ~ a {
   color: var(--color-quaternary);
+  transition: color 0.2s ease;
 }
 
 .nav-separator ~ a:hover {
   color: oklch(48.8% 0.243 264.376);
-  transition: color 0.2s ease;
 }
 
 .nav-icon {
@@ -330,7 +330,7 @@ header {
   height: 100%;
   width: 100%;
   max-width: 420px;
-  background: #fff;
+  background: var(--color-white);
   padding: 20px 24px 28px;
   display: flex;
   flex-direction: column;
@@ -381,7 +381,7 @@ header {
 
 .menu-subscribe {
   background: var(--color-quaternary);
-  color: #fff;
+  color: var(--color-white);
   border: none;
   padding: 14px 20px;
   border-radius: 999px;
@@ -390,9 +390,9 @@ header {
 }
 
 .menu-login {
-  background: #fff;
+  background: var(--color-white);
   color: var(--color-primary);
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border-strong);
   padding: 12px 20px;
   border-radius: 999px;
   font-weight: 700;

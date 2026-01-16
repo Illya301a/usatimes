@@ -2,16 +2,19 @@
 import { ref, onMounted } from 'vue'
 import marketUp from './icons/mainIcons/marketUp.svg'
 import marketDown from './icons/mainIcons/marketDown.svg'
+import { fetchMarket } from '../composables/useApi'
 
 const stocks = ref([])
 
+const emit = defineEmits(['loaded'])
+
 onMounted(async () => {
   try {
-    const response = await fetch('https://uat.usatimes.com/api/market')
-    const data = await response.json()
-    stocks.value = data.stocks || []
+    stocks.value = await fetchMarket()
   } catch (error) {
     console.error('Failed to fetch market data:', error)
+  } finally {
+    emit('loaded')
   }
 })
 
@@ -63,7 +66,7 @@ const formatNumber = (num) => {
 .market {
   width: 100%;
   padding-block: 16px;
-  border-bottom: 1px solid #F3F4F6;
+  border-bottom: 1px solid var(--color-gray-100);
   background: #F9FAFB80;
   display: flex;
   align-items: center;
@@ -87,13 +90,13 @@ const formatNumber = (num) => {
   top: 20%;
   bottom: 20%;
   width: 1px;
-  background: #e0e0e0;
+  background: var(--color-border-strong);
 }
 
 .market-dot {
   width: 8px;
   height: 8px;
-  background: #00C950;
+  background: var(--color-success);
   border-radius: 50%;
 }
 
@@ -161,6 +164,7 @@ const formatNumber = (num) => {
 }
 
 .market-arrow {
+  margin-block: auto;
   width: 12px;
   margin-left: 10px;
 }
@@ -183,11 +187,11 @@ const formatNumber = (num) => {
 }
 
 .market-change.positive {
-  color: #00C950;
+  color: var(--color-success);
 }
 
 .market-change.negative {
-  color: #D32F2F;
+  color: var(--color-danger);
 }
 
 @media (max-width: 768px) {

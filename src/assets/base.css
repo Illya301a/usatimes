@@ -3,6 +3,16 @@
   --color-secondary: #6A7282;
   --color-tertiary: #4A5565;
   --color-quaternary: #0033A0;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-100: #F3F4F6;
+  --color-gray-300: #D1D5DC;
+  --color-gray-400: #99A1AF;
+  --color-gray-500: #71717A;
+  --color-border-strong: #E0E0E0;
+  --color-success: #00C950;
+  --color-danger: #D32F2F;
   
   
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
