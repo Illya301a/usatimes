@@ -22,7 +22,6 @@ import Footer from './components/Footer.vue'
 .layout {
   display: flex;
   align-items: flex-start;
-  gap: 32px;
 }
 
 @media (max-width: 1024px) {

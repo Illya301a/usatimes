@@ -114,4 +114,14 @@ onMounted(async () => {
   font-size: 13px;
   margin: 0 32px 0 56px;
 }
+
+@media (max-width: 768px) {
+  .trending {
+    padding: 12px 16px;
+  }
+
+  .trending-separator {
+    margin: 0 16px 0 24px;
+  }
+}
 </style>

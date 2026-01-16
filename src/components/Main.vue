@@ -10,7 +10,7 @@ let relatedIntervalId = null
 const currentArticle = computed(() => articles.value[currentIndex.value])
 
 const firstArticle = computed(() => articles.value[relatedIndex.value * 2])
-const secondArticle = computed(() => articles.value[relatedIndex.value * 2 + 1])
+const secondArticle = computed(() => articles.value[relatedIndex.value * 2 + 3])
 
 onMounted(async () => {
   const response = await fetch('https://uat.usatimes.com/api/articles')
@@ -334,6 +334,7 @@ const formatCategory = (type) => {
 
 .content-analysis {
   display: flex;
+  gap: 24px;
 }
 
 .analysis-item {
@@ -486,6 +487,10 @@ const formatCategory = (type) => {
     margin-bottom: 32px;
   }
 
+  .content-image img {
+    max-height: 210px;
+  }
+
   .article-title {
     font-size: 36px;
     line-height: 40px;
@@ -497,6 +502,20 @@ const formatCategory = (type) => {
 
   .related-item {
     width: 100%;
+  }
+
+  .opinion-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .content-analysis {
+    flex-direction: column;
+  }
+
+  .analysis-item {
+    border-right: none;
+    margin-right: 0;
   }
 }
 

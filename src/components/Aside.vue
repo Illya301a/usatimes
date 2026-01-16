@@ -93,6 +93,8 @@
 aside {
   width: 40%;
   padding: 32px;
+  margin: 0 auto;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .booking-container {
@@ -302,12 +304,13 @@ aside {
 .login-link {
   font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
   color: #6A7282;
   text-decoration: none;
   letter-spacing: 0.5px;
   transition: color 0.2s ease;
   text-transform: uppercase;
+  margin-bottom: 40px;
 }
 
 .login-link:hover {
@@ -332,8 +335,7 @@ aside {
   }
 
   .booking-controls {
-    flex-direction: column;
-    align-items: flex-start;
+    gap: 8px;
   }
 }
 </style>

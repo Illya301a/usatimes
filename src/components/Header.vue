@@ -175,9 +175,15 @@ header {
   border: none;
   cursor: pointer;
   color: var(--color-primary);
-  padding: 5px;
+  padding: 10px;
   display: flex;
   align-items: center;
+  border-radius: 6px;
+}
+
+.search-button:hover {
+  background-color: #f3f4f6;
+  transition: background-color 0.2s ease;
 }
 
 .login-link,

@@ -189,4 +189,15 @@ const formatNumber = (num) => {
 .market-change.negative {
   color: #D32F2F;
 }
+
+@media (max-width: 768px) {
+  .market-header {
+    padding-inline: 16px;
+  }
+
+  .market-card {
+    min-width: 160px;
+    padding: 0 16px;
+  }
+}
 </style>

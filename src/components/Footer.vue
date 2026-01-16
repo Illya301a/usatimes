@@ -122,6 +122,11 @@ footer {
   border-top: 1px solid #E5E7EB;
 }
 
+footer a:hover {
+  color: #000;
+  transition: color 0.5s ease;
+}
+
 .footer-content {
   max-width: 1920px;
   margin: 0 auto;
@@ -129,12 +134,12 @@ footer {
 
 .footer-main {
   display: flex;
-  gap: 80px;
   margin-bottom: 32px;
 }
 
 .footer-left {
   flex: 0 0 400px;
+  margin-right: 200px;
 }
 
 .logo {
@@ -175,13 +180,14 @@ footer {
 
 .newsletter-input {
   flex: 1;
-  padding: 14px 16px;
-  border: none;
-  background: #F3F4F6;
-  border-radius: 8px 0 0 8px;
+  padding: 4px 12px;
+  margin-right: 8px;
+  border: 1px solid #E5E7EB;
+  background: #F9FAFB;
+  border-radius: 6px;
   font-family: var(--font-sans);
   font-size: 14px;
-  color: var(--color-primary);
+  color: #71717A;
   outline: none;
 }
 
@@ -190,11 +196,11 @@ footer {
 }
 
 .newsletter-btn {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border: none;
   background: #000;
-  border-radius: 0 8px 8px 0;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -223,9 +229,19 @@ footer {
   background: #fff;
 }
 
+.social-icon:hover {
+  background: #000;
+  transition: background 0.2s ease;
+}
+
 .social-icon img {
   width: 20px;
   height: 20px;
+}
+
+.social-icon:hover img {
+  filter: invert(1);
+  transition: filter 0.2s ease;
 }
 
 .footer-right {
@@ -269,10 +285,6 @@ footer {
   text-decoration: none;
 }
 
-.nav-links a:hover {
-  color: var(--color-primary);
-}
-
 .footer-separator {
   height: 1px;
   background: #E0E0E0;
@@ -283,9 +295,10 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
   font-family: var(--font-sans);
   font-size: 12px;
-  color: var(--color-secondary);
+  color: #99A1AF;
 }
 
 .bottom-links {
@@ -294,12 +307,8 @@ footer {
 }
 
 .bottom-links a {
-  color: var(--color-secondary);
+  color: #99A1AF;
   text-decoration: none;
-}
-
-.bottom-links a:hover {
-  color: var(--color-primary);
 }
 
 .footer-tagline {
@@ -314,6 +323,7 @@ footer {
 
   .footer-left {
     flex: 1;
+    margin-right: 0;
   }
 
   .footer-right {
@@ -337,8 +347,17 @@ footer {
 
   .footer-bottom {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
+    text-align: center;
+  }
+
+  .bottom-links {
+    order: 2;
+  }
+
+  .footer-tagline {
+    order: 3;
   }
 }
 </style>
